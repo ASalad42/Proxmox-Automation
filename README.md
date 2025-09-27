@@ -44,7 +44,12 @@ Flow = Proxmox → Cloud-Init Template → Terraform → Ansible
 - reboot vm and check ip in summary
 - https://registry.terraform.io/providers/Telmate/proxmox/latest/docs/resources/vm_qemu
 
+<img width="1181" height="437" alt="image" src="https://github.com/user-attachments/assets/a0017079-fc13-4651-be73-770389920aed" />
+<img width="1079" height="624" alt="image" src="https://github.com/user-attachments/assets/39e3cf2c-5345-46d0-af73-23a674a828da" />
+
+
 ## Configure VM with Ansible
 
 - Create an Ansible playbook (ansible/playbook.yml) to install Docker + Docker Compose on vm
 - `ansible-playbook -i inventory.ini playbook.yml`
+<img width="576" height="187" alt="image" src="https://github.com/user-attachments/assets/8958754f-c7bd-499e-b278-ad57ac2297d5" />
