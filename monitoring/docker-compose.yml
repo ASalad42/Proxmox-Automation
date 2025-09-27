@@ -1,0 +1,77 @@
+---
+version: '3'
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+networks:
+  homelab:
+    external: true
+    
+services:
+  prometheus:
+    image: prom/prometheus:v2.37.9
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    command: "--config.file=/config/prometheus.yml"
+    volumes:
+      - ./prometheus/prometheus.yml:/config/prometheus.yml
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    networks:
+      - homelab
+  
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - homelab
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.5.0
+    container_name: node_exporter
+    command: "--path.rootfs=/host"
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - homelab
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0     
+    container_name: cadvisor
+    ports:
+      - 8082:8080 # host 8082 → container 8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - homelab
+  
+  pve_exporter:
+    image: prompve/prometheus-pve-exporter
+    container_name: pve_exporter
+    ports:
+      - 9221:9221
+    restart: unless-stopped
+    volumes:
+      - ./pve/pve.yml:/etc/prometheus/pve.yml
+    networks:
+      - homelab
