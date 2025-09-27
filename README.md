@@ -1,5 +1,8 @@
 # Proxmox Automation
 
+<img width="1153" height="345" alt="prox" src="https://github.com/user-attachments/assets/e48cdfb4-9f83-4171-87cc-0b24251daa95" />
+
+
 Flow = Proxmox → Cloud-Init Template → Terraform → Ansible
 
 ## Install Proxmox VE
